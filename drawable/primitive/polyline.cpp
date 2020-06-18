@@ -3,7 +3,7 @@
 //
 
 #include "polyline.h"
-#include "anchor.h"
+#include "../../geometry/anchor.h"
 
 int Polyline::nbLines() const {
     return points.size() - 1;

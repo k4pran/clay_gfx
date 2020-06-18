@@ -5,7 +5,7 @@
 #include <iostream>
 #include "point.h"
 #include "line.h"
-#include "float_approximator.h"
+#include "../common/float_approximator.h"
 
 float EPSILON = 0.000001;
 

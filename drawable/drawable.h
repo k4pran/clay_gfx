@@ -6,7 +6,7 @@
 #define OPENGL_TUTORIAL_DRAWABLE_H
 
 #include <vector>
-#include "point.h"
+#include "../geometry/point.h"
 
 class Drawable {
 public:

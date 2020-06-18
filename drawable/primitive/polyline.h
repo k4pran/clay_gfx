@@ -6,8 +6,8 @@
 #define OPENGL_TUTORIAL_POLYLINE_H
 
 #include <vector>
-#include "drawable.h"
-#include "anchor.h"
+#include "../drawable.h"
+#include "../../geometry/anchor.h"
 
 class Polyline : Drawable {
 
