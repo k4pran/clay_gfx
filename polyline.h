@@ -10,7 +10,7 @@
 #include "line.h"
 #include "drawable.h"
 
-class Polyline : public Entity {
+class Polyline : public Drawable {
 public:
     explicit Polyline(std::vector<Point2D> points);
 

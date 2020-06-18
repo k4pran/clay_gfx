@@ -8,7 +8,7 @@
 #include <vector>
 #include "point.h"
 
-class Entity {
+class Drawable {
 public:
     virtual std::vector<Point2D> asVertices() = 0;
 };
