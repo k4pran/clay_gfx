@@ -10,7 +10,7 @@
 
 class Drawable {
 public:
-    virtual std::vector<Point2D> asVertices() = 0;
+    virtual std::vector<float> asVertices() = 0;
 };
 
 #endif //OPENGL_TUTORIAL_DRAWABLE_H

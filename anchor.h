@@ -7,7 +7,6 @@
 
 #include "point.h"
 #include "vector.h"
-#include "polyline.h"
 
 enum class CapType {
     BUTT,
@@ -34,7 +33,7 @@ struct Anchor {
     JointType jointType;
     SegmentPosition segmentPosition;
 
-    static std::vector<Anchor> createAnchors(const Polyline& points,
+    static std::vector<Anchor> createAnchors(std::vector<Point2D> points,
                                              const JointType& jointType,
                                              const CapType& capType);
 };

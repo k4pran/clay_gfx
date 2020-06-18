@@ -8,7 +8,7 @@
 #include <vector>
 #include "point.h"
 
-struct LineGeo {
+struct Line {
     Point2D pointA, pointB;
 
     float findSlope() const;
@@ -34,6 +34,6 @@ struct Intercept {
     Point2D intercept;
 };
 
-Intercept findIntersection(const LineGeo& lineA, const LineGeo& lineB);
+Intercept findIntersection(const Line& lineA, const Line& lineB);
 
 #endif //OPENGL_TUTORIAL_LINE_H

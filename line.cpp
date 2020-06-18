@@ -9,7 +9,7 @@
 
 float EPSILON = 0.000001;
 
-float LineGeo::findSlope() const { // todo handle undefined slope
+float Line::findSlope() const { // todo handle undefined slope
     float rise = this->pointB.y - this->pointA.y;
     float run = this->pointB.x - this->pointA.x;
     if (run == 0) {
@@ -18,7 +18,7 @@ float LineGeo::findSlope() const { // todo handle undefined slope
     return rise / run;
 }
 
-float LineGeo::findYIntercept() const { // todo handle undefined slope and when x is 0
+float Line::findYIntercept() const { // todo handle undefined slope and when x is 0
     float slope = this->findSlope();
     if (slope == std::numeric_limits<float>::infinity()) {
         return 0; // todo handle better - may not be 0
@@ -26,19 +26,19 @@ float LineGeo::findYIntercept() const { // todo handle undefined slope and when 
     return this->pointA.y - (slope * this->pointA.x);
 }
 
-std::vector<Point2D> LineGeo::splitIntoFive() const {
+std::vector<Point2D> Line::splitIntoFive() const {
     Point2D midPoint = lineMid(this->pointA, this->pointB);
     Point2D lowerPoint = lineMid(this->pointA, midPoint);
     Point2D upperPoint = lineMid(midPoint, this->pointB);
     return {this->pointA, lowerPoint, midPoint, upperPoint, this->pointB};
 }
 
-std::vector<Point2D> LineGeo::splitIntoThree() const {
+std::vector<Point2D> Line::splitIntoThree() const {
     Point2D midPoint = lineMid(this->pointA, this->pointB);
     return {this->pointA, midPoint, pointB};
 }
 
-Intercept findIntersection(const LineGeo& lineA, const LineGeo& lineB) { // todo handle parallel lines
+Intercept findIntersection(const Line& lineA, const Line& lineB) { // todo handle parallel lines
     float slopeA = lineA.findSlope();
     float slopeB = lineB.findSlope();
 

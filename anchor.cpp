@@ -41,16 +41,15 @@ AnchorMetrics::AnchorMetrics(Anchor anchor, float thickness): anchor(anchor), th
     }
 }
 
-std::vector<Anchor> Anchor::createAnchors(const Polyline& polyline,
-                                  const JointType& jointType,
-                                  const CapType& capType) {
-    if (polyline.nbLines() == 0) {
+std::vector<Anchor> Anchor::createAnchors(std::vector<Point2D> points,
+                                          const JointType& jointType,
+                                          const CapType& capType) {
+    if (points.size() < 2) {
         return std::vector<Anchor>{Anchor{}};
     }
 
-    std::vector<Point2D> points = polyline.points;
-    if (polyline.nbLines() == 1) {
-        LineGeo singleLine = {points.front(), points.back()};
+    if (points.size() == 2) {
+        Line singleLine = {points.front(), points.back()};
         points = singleLine.splitIntoThree();
     }
 

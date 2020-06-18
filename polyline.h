@@ -6,18 +6,26 @@
 #define OPENGL_TUTORIAL_POLYLINE_H
 
 #include <vector>
-#include <list>
-#include "line.h"
 #include "drawable.h"
+#include "anchor.h"
 
-class Polyline : public Drawable {
-public:
-    explicit Polyline(std::vector<Point2D> points);
-
-    std::vector<Point2D> asVertices() override;
+class Polyline : Drawable {
 
     std::vector<Point2D> points;
+    JointType jointType;
+    CapType capType;
+    float thickness;
 
+public:
+    Polyline() : thickness(0.05), jointType(JointType::MITER), capType(CapType::SQUARE){};
+
+    Polyline(std::vector<Point2D> points, float thickness):
+        points(points), thickness(thickness), jointType(JointType::MITER), capType(CapType::SQUARE){};
+
+    Polyline(std::vector<Point2D> points, float thickness, JointType jointType, CapType capType):
+        points(points), thickness(thickness), jointType(jointType), capType(capType){};
+
+    std::vector<float> asVertices() override;
     int nbLines() const;
 };
 
