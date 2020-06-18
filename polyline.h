@@ -8,8 +8,14 @@
 #include <vector>
 #include <list>
 #include "line.h"
+#include "drawable.h"
 
-struct Polyline {
+class Polyline : public Entity {
+public:
+    explicit Polyline(std::vector<Point2D> points);
+
+    std::vector<Point2D> asVertices() override;
+
     std::vector<Point2D> points;
 
     int nbLines() const;

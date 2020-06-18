@@ -7,3 +7,9 @@
 int Polyline::nbLines() const {
     return this->points.size() - 1;
 }
+
+std::vector<Point2D> Polyline::asVertices() {
+    return {};
+}
+
+Polyline::Polyline(std::vector<Point2D> points): points(points) {}

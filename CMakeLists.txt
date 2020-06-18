@@ -7,7 +7,7 @@ add_executable(
         opengl_tutorial
         main.cpp
         ext/glad/src/glad.c
-        shader.h shader.cpp point.cpp point.h vector.h line.h vector.cpp anchor.h anchor.cpp line.cpp polyline.h polyline.cpp float_approximator.h float_approximator.cpp)
+        shader.h shader.cpp point.cpp point.h vector.h line.h vector.cpp anchor.h anchor.cpp line.cpp polyline.h polyline.cpp float_approximator.h float_approximator.cpp drawable.h triangle.h)
 
 find_package(PkgConfig REQUIRED)
 pkg_search_module(GLFW REQUIRED glfw3)
