@@ -38,6 +38,14 @@ std::vector<Point2D> LineMetrics::splitIntoThree() const {
     return {this->pointA, midPoint, pointB};
 }
 
+Point2D LineMetrics::findMid() const {
+    return lineMid(pointA, pointB);
+}
+
+float LineMetrics::findLength() const {
+    return Point2D::pointDistance(pointA, pointB);
+}
+
 Intercept findIntersection(const LineMetrics& lineA, const LineMetrics& lineB) { // todo handle parallel lines
     float slopeA = lineA.findSlope();
     float slopeB = lineB.findSlope();
@@ -71,4 +79,11 @@ Intercept findIntersection(const LineMetrics& lineA, const LineMetrics& lineB) {
     float yIntersection = slopeA * xIntersection + yInterceptA;
 
     return {InterceptResult::SINGLE, {xIntersection, yIntersection}};
+}
+
+Point2D lineMid(const Point2D& a, const Point2D& b) {
+    return {
+        (a.x + b.x) / 2,
+        (a.y + b.y) / 2
+    };
 }

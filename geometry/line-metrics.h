@@ -15,6 +15,10 @@ struct LineMetrics {
 
     float findYIntercept() const;
 
+    float findLength() const;
+
+    Point2D findMid() const;
+
     std::vector<Point2D> splitIntoThree() const;
 
     std::vector<Point2D> splitIntoFive() const;
@@ -35,5 +39,7 @@ struct Intercept {
 };
 
 Intercept findIntersection(const LineMetrics& lineA, const LineMetrics& lineB);
+
+Point2D lineMid(const Point2D& a, const Point2D& b);
 
 #endif //OPENGL_TUTORIAL_LINE_METRICS_H

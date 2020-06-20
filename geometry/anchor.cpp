@@ -88,10 +88,11 @@ std::vector<Point2D> AnchorMetrics::triangulate() const {
 
     std::vector<Point2D> borderCorners = findBorderCorners();
 
-    Point2D centerBorderA = {anchor.center.x + beginToBorder.x, anchor.center.y + beginToBorder.y};
-    Point2D centerBorderB = {anchor.center.x + endToBorder.x, anchor.center.y + endToBorder.y};
-    Point2D beginBorder = {anchor.begin.x + beginToBorder.x, anchor.begin.y + beginToBorder.y};
-    Point2D endBorder = {anchor.end.x + endToBorder.x, anchor.end.y + endToBorder.y};
+    Point2D centerBorderA = anchor.center.translateCopy(beginToBorder);
+    Point2D centerBorderB = anchor.center.translateCopy(endToBorder);
+    Point2D beginBorder = anchor.center.translateCopy(beginToBorder);
+    Point2D endBorder = anchor.end.translateCopy(endToBorder);
+
     Intercept intersection = findIntersection({beginBorder, centerBorderA}, {endBorder, centerBorderB});
 
     // no joint required for straight anchors
@@ -107,11 +108,11 @@ std::vector<Point2D> AnchorMetrics::triangulate() const {
 std::vector<Point2D> AnchorMetrics::triangulateAnchored() const {
     std::vector<Point2D> borderCorners = findBorderCorners();
 
-    Point2D beginVert1 = {anchor.begin.x + beginToBorder.x, anchor.begin.y + beginToBorder.y};
-    Point2D beginVert2 = {anchor.begin.x - beginToBorder.x, anchor.begin.y - beginToBorder.y};
+    Point2D beginVert1 = anchor.begin.translateCopy(beginToBorder);
+    Point2D beginVert2 = anchor.begin.translateCopy(beginToBorder.reverseCopy());
 
-    Point2D endVert5 = {anchor.end.x + endToBorder.x, anchor.end.y + endToBorder.y};
-    Point2D endVert6 = {anchor.end.x - endToBorder.x, anchor.end.y - endToBorder.y};
+    Point2D endVert5 = anchor.end.translateCopy(endToBorder);
+    Point2D endVert6 = anchor.end.translateCopy(endToBorder.reverseCopy());
 
     std::vector<Point2D> vertices = triangulateLineRects();
 
@@ -159,31 +160,31 @@ std::vector<Point2D> AnchorMetrics::triangulateStraight() const {
 std::vector<Point2D> AnchorMetrics::triangulateLineRects() const {
     std::vector<Point2D> vertices;
 
-    Point2D centerBorderA = {anchor.center.x + beginToBorder.x, anchor.center.y + beginToBorder.y};
-    Point2D centerBorderB = {anchor.center.x + endToBorder.x, anchor.center.y + endToBorder.y};
-    Point2D beginBorder = {anchor.begin.x + beginToBorder.x, anchor.begin.y + beginToBorder.y};
-    Point2D endBorder = {anchor.end.x + endToBorder.x, anchor.end.y + endToBorder.y};
+    Point2D centerBorderA = anchor.center.translateCopy(beginToBorder);
+    Point2D centerBorderB = anchor.center.translateCopy(endToBorder);
+    Point2D beginBorder = anchor.begin.translateCopy(beginToBorder);
+    Point2D endBorder = anchor.end.translateCopy(endToBorder);
     Intercept intersection = findIntersection({beginBorder, centerBorderA}, {endBorder, centerBorderB});
 
     Point2D intersectionPoint = intersection.intercept;
 
     Vector2D centerToJoint3 = Vector2D{points2DtoVector2D(anchor.center, intersectionPoint)};
 
-    Point2D beginVert1 = {anchor.begin.x + beginToBorder.x, anchor.begin.y + beginToBorder.y};
-    Point2D beginVert2 = {anchor.begin.x - beginToBorder.x, anchor.begin.y - beginToBorder.y};
-    Point2D beginVert3 = {anchor.center.x - centerToJoint3.x, anchor.center.y - centerToJoint3.y};
+    Point2D beginVert1 = anchor.begin.translateCopy(beginToBorder);
+    Point2D beginVert2 = anchor.begin.translateCopy(beginToBorder.reverseCopy());
+    Point2D beginVert3 = anchor.center.translateCopy(centerToJoint3.reverseCopy());
 
-    Point2D beginVert4 = {anchor.begin.x + beginToBorder.x, anchor.begin.y + beginToBorder.y};
-    Point2D beginVert5 = {anchor.center.x - centerToJoint3.x, anchor.center.y - centerToJoint3.y};
-    Point2D beginVert6 = {anchor.center.x + beginToBorder.x, anchor.center.y + beginToBorder.y};
+    Point2D beginVert4 = anchor.begin.translateCopy(beginToBorder);
+    Point2D beginVert5 = anchor.center.translateCopy(centerToJoint3.reverseCopy());
+    Point2D beginVert6 = anchor.center.translateCopy(beginToBorder);
 
-    Point2D endVert1 = {anchor.center.x - centerToJoint3.x, anchor.center.y - centerToJoint3.y};
-    Point2D endVert2 = {anchor.center.x + endToBorder.x, anchor.center.y + endToBorder.y};
-    Point2D endVert3 = {anchor.end.x + endToBorder.x, anchor.end.y + endToBorder.y};
+    Point2D endVert1 = anchor.center.translateCopy(centerToJoint3.reverseCopy());
+    Point2D endVert2 = anchor.center.translateCopy(endToBorder);
+    Point2D endVert3 = anchor.end.translateCopy(endToBorder);
 
-    Point2D endVert4 = {anchor.center.x - centerToJoint3.x, anchor.center.y - centerToJoint3.y};
-    Point2D endVert5 = {anchor.end.x + endToBorder.x, anchor.end.y + endToBorder.y};
-    Point2D endVert6 = {anchor.end.x - endToBorder.x, anchor.end.y - endToBorder.y};
+    Point2D endVert4 = anchor.center.translateCopy(centerToJoint3.reverseCopy());
+    Point2D endVert5 = anchor.end.translateCopy(endToBorder);
+    Point2D endVert6 = anchor.end.translateCopy(endToBorder.reverseCopy());
 
     return {beginVert1, beginVert2, beginVert3,
             beginVert4, beginVert5, beginVert6,
@@ -194,24 +195,24 @@ std::vector<Point2D> AnchorMetrics::triangulateLineRects() const {
 std::vector<Point2D> AnchorMetrics::triangulateMiterJoint() const {
     std::vector<Point2D> vertices;
 
-    Point2D centerBorderA = {anchor.center.x + beginToBorder.x, anchor.center.y + beginToBorder.y};
-    Point2D centerBorderB = {anchor.center.x + endToBorder.x, anchor.center.y + endToBorder.y};
-    Point2D beginBorder = {anchor.begin.x + beginToBorder.x, anchor.begin.y + beginToBorder.y};
-    Point2D endBorder = {anchor.end.x + endToBorder.x, anchor.end.y + endToBorder.y};
+    Point2D centerBorderA = anchor.center.translateCopy(beginToBorder);
+    Point2D centerBorderB = anchor.center.translateCopy(endToBorder);
+    Point2D beginBorder = anchor.begin.translateCopy(beginToBorder);
+    Point2D endBorder = anchor.end.translateCopy(endToBorder);
     Intercept intersection = findIntersection({beginBorder, centerBorderA}, {endBorder, centerBorderB});
 
     Point2D intersectionPoint = intersection.intercept;
 
     Vector2D centerToJoint3 = Vector2D{points2DtoVector2D(anchor.center, intersectionPoint)};
 
-    Point2D centerVert1 = {anchor.center.x - centerToJoint3.x, anchor.center.y - centerToJoint3.y};
-    Point2D centerVert2 = {anchor.center.x + beginToBorder.x, anchor.center.y + beginToBorder.y};
-    Point2D centerVert3 = {anchor.center.x + endToBorder.x, anchor.center.y + endToBorder.y};
+    Point2D centerVert1 = anchor.center.translateCopy(centerToJoint3.reverseCopy());
+    Point2D centerVert2 = anchor.center.translateCopy(beginToBorder);
+    Point2D centerVert3 = anchor.center.translateCopy(endToBorder);
 
     // joint
-    Point2D joint1 = {anchor.center.x + beginToBorder.x, anchor.center.y + beginToBorder.y};
-    Point2D joint2 = {anchor.center.x + endToBorder.x, anchor.center.y + endToBorder.y};
-    Point2D joint3 = {anchor.center.x + centerToJoint3.x, anchor.center.y + centerToJoint3.y};
+    Point2D joint1 = anchor.center.translateCopy(beginToBorder);
+    Point2D joint2 = anchor.center.translateCopy(endToBorder);
+    Point2D joint3 = anchor.center.translateCopy(centerToJoint3);
 
     vertices.push_back(centerVert1);
     vertices.push_back(centerVert2);
@@ -225,15 +226,15 @@ std::vector<Point2D> AnchorMetrics::triangulateMiterJoint() const {
 
 std::vector<Point2D> AnchorMetrics::triangulateRoundJoint() const {
     std::vector<Point2D> vertices;
-    Point2D centerBorderA = {anchor.center.x + beginToBorder.x, anchor.center.y + beginToBorder.y};
-    Point2D centerBorderB = {anchor.center.x + endToBorder.x, anchor.center.y + endToBorder.y};
-    Point2D beginBorder = {anchor.begin.x + beginToBorder.x, anchor.begin.y + beginToBorder.y};
-    Point2D endBorder = {anchor.end.x + endToBorder.x, anchor.end.y + endToBorder.y};
+    Point2D centerBorderA = anchor.center.translateCopy(beginToBorder);
+    Point2D centerBorderB = anchor.center.translateCopy(endToBorder);
+    Point2D beginBorder = anchor.begin.translateCopy(beginToBorder);
+    Point2D endBorder = anchor.end.translateCopy(endToBorder);
     Intercept intersection = findIntersection({beginBorder, centerBorderA}, {endBorder, centerBorderB});
 
     Vector2D centerToJoint3 = Vector2D{points2DtoVector2D(anchor.center, intersection.intercept)};
 
-    Point2D arcOrigin = {anchor.center.x - centerToJoint3.x, anchor.center.y - centerToJoint3.y};
+    Point2D arcOrigin = anchor.center.translateCopy(centerToJoint3.reverseCopy());
 
     Vector2D arcStart = points2DtoVector2D(arcOrigin, centerBorderA);
     arcStart.normalize();
@@ -251,7 +252,7 @@ std::vector<Point2D> AnchorMetrics::triangulateRoundJoint() const {
         arcEndAngle = 2 * M_PI - arcEndAngle;
     }
 
-    float radius = pointDistance(centerBorderA, arcOrigin);
+    float radius = Point2D::pointDistance(centerBorderA, arcOrigin);
 
     bool incremental = true;
     if (arcStartAngle > arcEndAngle) {
@@ -308,16 +309,16 @@ std::vector<Point2D> triangulateSquareCap(const Point2D& beginSegment,
     Vector2D segmentAsVec = points2DtoVector2D(beginSegment, endSegment);
     segmentAsVec.normalize();
     segmentAsVec.scale(anchorMetrics.thickness / 2);
-    Point2D capCornerA = {segmentCornerA.x + segmentAsVec.x, segmentCornerA.y + segmentAsVec.y};
-    Point2D capCornerB = {segmentCornerB.x + segmentAsVec.x, segmentCornerB.y + segmentAsVec.y};
+    Point2D capCornerA = segmentCornerA.translateCopy(segmentAsVec);
+    Point2D capCornerB = segmentCornerB.translateCopy(segmentAsVec);
     return {capCornerA, capCornerB, segmentCornerA, segmentCornerA, segmentCornerB, capCornerB};
 }
 
 std::vector<Point2D> AnchorMetrics::findBorderCorners() const {
-    Point2D vert1 = {anchor.begin.x + beginToBorder.x, anchor.begin.y + beginToBorder.y};
-    Point2D vert2 = {anchor.begin.x - beginToBorder.x, anchor.begin.y - beginToBorder.y};
-    Point2D vert3 = {anchor.end.x + endToBorder.x, anchor.end.y + endToBorder.y};
-    Point2D vert4 = {anchor.end.x - endToBorder.x, anchor.end.y - endToBorder.y};
+    Point2D vert1 = anchor.begin.translateCopy(beginToBorder);
+    Point2D vert2 = anchor.begin.translateCopy(beginToBorder.reverseCopy());
+    Point2D vert3 = anchor.end.translateCopy(endToBorder);
+    Point2D vert4 = anchor.end.translateCopy(endToBorder.reverseCopy());
     return {vert1, vert2, vert3, vert4};
 };
 

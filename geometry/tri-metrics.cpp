@@ -10,9 +10,9 @@ Point2D findCentroid(const Point2D& pointA, const Point2D& pointB, const Point2D
 }
 
 Point2D findInCenter(const Point2D &pointA, const Point2D &pointB, const Point2D &pointC) {
-    float sideLengthA = pointDistance(pointB, pointC);
-    float sideLengthB = pointDistance(pointC, pointA);
-    float sideLengthC = pointDistance(pointA, pointB);
+    float sideLengthA = Point2D::pointDistance(pointB, pointC);
+    float sideLengthB = Point2D::pointDistance(pointC, pointA);
+    float sideLengthC = Point2D::pointDistance(pointA, pointB);
 
     float xTotal = sideLengthA * pointA.x + sideLengthB * pointB.x + sideLengthC * pointC.x;
     float yTotal = sideLengthA * pointA.y + sideLengthB * pointB.y + sideLengthC * pointC.y;

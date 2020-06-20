@@ -8,19 +8,21 @@
 #include <cmath>
 #include "point.h"
 
-Point2D lineMid(const Point2D& a, const Point2D& b) {
-    return {
-        (a.x + b.x) / 2,
-        (a.y + b.y) / 2
-    };
-}
-
-float pointDistance(const Point2D& a, const Point2D& b) {
+float Point2D::pointDistance(const Point2D &a, const Point2D &b) {
     return sqrt(pow(b.x - a.x, 2) + pow(b.y - a.y, 2));
 }
 
 bool Point2D::equals(const Point2D& otherPoint) const {
     return this->x == otherPoint.x && this->y == otherPoint.y;
+}
+
+void Point2D::translate(const Vector2D& translationVec) {
+    this->x += translationVec.x;
+    this->y += translationVec.y;
+}
+
+Point2D Point2D::translateCopy(const Vector2D &translationVec) const {
+    return {this->x + translationVec.x, this->y + translationVec.y};
 }
 
 #endif

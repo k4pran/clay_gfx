@@ -7,6 +7,7 @@
 
 #include "point.h"
 
+struct Point2D;
 struct Vector2D {
     float x, y;
 
@@ -14,9 +15,15 @@ struct Vector2D {
 
     void scale(float scalar);
 
+    void reverse();
+
     void rotate(float rotationDeg);
 
     float magnitude() const;
+
+    Vector2D scaleCopy(float scalar) const;
+
+    Vector2D reverseCopy() const;
 };
 
 Vector2D calcNormalizedVector2D(const Vector2D& vector);

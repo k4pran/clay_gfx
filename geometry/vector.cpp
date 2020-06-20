@@ -37,6 +37,18 @@ float Vector2D::magnitude() const {
     return ::magnitude(*this);
 }
 
+void Vector2D::reverse() {
+    this->scale(-1);
+}
+
+Vector2D Vector2D::scaleCopy(float scalar) const {
+    return {x * scalar, y * scalar};
+}
+
+Vector2D Vector2D::reverseCopy() const {
+    return Vector2D{x * -1, y * -1};
+}
+
 Vector2D calcNormalizedVector2D(const Vector2D& vector) {
     float magnitude = ::magnitude(vector);
     return {vector.x / magnitude, vector.y / magnitude};
