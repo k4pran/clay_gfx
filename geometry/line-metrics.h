@@ -2,13 +2,13 @@
 // Created by Ryan McCauley on 25/05/2020.
 //
 
-#ifndef OPENGL_TUTORIAL_LINE_H
-#define OPENGL_TUTORIAL_LINE_H
+#ifndef OPENGL_TUTORIAL_LINE_METRICS_H
+#define OPENGL_TUTORIAL_LINE_METRICS_H
 
 #include <vector>
 #include "point.h"
 
-struct Line {
+struct LineMetrics {
     Point2D pointA, pointB;
 
     float findSlope() const;
@@ -34,6 +34,6 @@ struct Intercept {
     Point2D intercept;
 };
 
-Intercept findIntersection(const Line& lineA, const Line& lineB);
+Intercept findIntersection(const LineMetrics& lineA, const LineMetrics& lineB);
 
-#endif //OPENGL_TUTORIAL_LINE_H
+#endif //OPENGL_TUTORIAL_LINE_METRICS_H

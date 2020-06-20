@@ -5,6 +5,14 @@
 #include "polyline.h"
 #include "../../geometry/anchor.h"
 
+Polyline::Polyline() : thickness(0.05), jointType(JointType::MITER), capType(CapType::SQUARE){};
+
+Polyline::Polyline(std::vector<Point2D> points, float thickness):
+points(points), thickness(thickness), jointType(JointType::MITER), capType(CapType::SQUARE){};
+
+Polyline::Polyline(std::vector<Point2D> points, float thickness, JointType jointType, CapType capType):
+points(points), thickness(thickness), jointType(jointType), capType(capType){};
+
 int Polyline::nbLines() const {
     return points.size() - 1;
 }

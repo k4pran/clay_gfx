@@ -9,7 +9,7 @@
 #include <cmath>
 #include "anchor.h"
 #include "vector.h"
-#include "line.h"
+#include "line-metrics.h"
 
 AnchorMetrics::AnchorMetrics(Anchor anchor, float thickness): anchor(anchor), thickness(thickness) {
 
@@ -49,7 +49,7 @@ std::vector<Anchor> Anchor::createAnchors(std::vector<Point2D> points,
     }
 
     if (points.size() == 2) {
-        Line singleLine = {points.front(), points.back()};
+        LineMetrics singleLine = {points.front(), points.back()};
         points = singleLine.splitIntoThree();
     }
 

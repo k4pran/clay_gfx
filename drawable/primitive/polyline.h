@@ -17,13 +17,9 @@ class Polyline : Drawable {
     float thickness;
 
 public:
-    Polyline() : thickness(0.05), jointType(JointType::MITER), capType(CapType::SQUARE){};
-
-    Polyline(std::vector<Point2D> points, float thickness):
-        points(points), thickness(thickness), jointType(JointType::MITER), capType(CapType::SQUARE){};
-
-    Polyline(std::vector<Point2D> points, float thickness, JointType jointType, CapType capType):
-        points(points), thickness(thickness), jointType(jointType), capType(capType){};
+    Polyline();
+    Polyline(std::vector<Point2D> points, float thickness);
+    Polyline(std::vector<Point2D> points, float thickness, JointType jointType, CapType capType);
 
     std::vector<float> asVertices() override;
     int nbLines() const;
