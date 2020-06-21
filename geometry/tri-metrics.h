@@ -3,7 +3,7 @@
 //
 
 #include "point.h"
-#include "../drawable/triangle.h"
+#include "../drawable/simple/triangle.h"
 
 #ifndef OPENGL_TUTORIAL_TRI_METRICS_H
 #define OPENGL_TUTORIAL_TRI_METRICS_H

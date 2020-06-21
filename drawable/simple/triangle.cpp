@@ -3,32 +3,12 @@
 //
 
 #include "triangle.h"
-#include "../geometry/line-metrics.h"
-#include "../geometry/tri-metrics.h"
+#include "../../geometry/line-metrics.h"
+#include "../../geometry/tri-metrics.h"
 
 Triangle::Triangle(const Point2D &pointA,
                    const Point2D &pointB,
-                   const Point2D &pointC)
-    : pointA(pointA), pointB(pointB), pointC(pointC), thickness(0.01), jointType(JointType::ROUND) {}
-
-Triangle::Triangle(const Point2D &pointA,
-                   const Point2D &pointB,
-                   const Point2D &pointC,
-                   JointType jointType)
-    : pointA(pointA), pointB(pointB), pointC(pointC), thickness(0.01), jointType(jointType) {}
-
-Triangle::Triangle(const Point2D &pointA,
-                   const Point2D &pointB,
-                   const Point2D &pointC,
-                   float thickness,
-                   JointType jointType)
-    : pointA(pointA), pointB(pointB), pointC(pointC), thickness(thickness), jointType(jointType) {}
-
-Triangle::Triangle(const Point2D &pointA,
-                   const Point2D &pointB,
-                   const Point2D &pointC,
-                   float thickness)
-    : pointA(pointA), pointB(pointB), pointC(pointC), thickness(thickness), jointType(JointType::MITER) {}
+                   const Point2D &pointC): pointA(pointA), pointB(pointB), pointC(pointC) {}
 
 std::vector<float> Triangle::asVertices() {
     // should start at the center of one of the sides so joints are handled correctly
@@ -50,12 +30,12 @@ std::vector<float> Triangle::asVertices() {
     for (auto & triangulatedPoint : triangulatedPoints) {
         vertices.push_back(triangulatedPoint.x);
         vertices.push_back(triangulatedPoint.y);
+        vertices.push_back(0);
 
-        // color todo
-        vertices.push_back(0.);
-        vertices.push_back(0.);
-        vertices.push_back(0.);
-        vertices.push_back(0.);
+        vertices.push_back(strokeColor.red);
+        vertices.push_back(strokeColor.green);
+        vertices.push_back(strokeColor.blue);
+        vertices.push_back(strokeColor.alpha);
     }
 
     if (filled) {
@@ -63,11 +43,10 @@ std::vector<float> Triangle::asVertices() {
             vertices.push_back(innerPoint.x);
             vertices.push_back(innerPoint.y);
 
-            // color todo
-            vertices.push_back(1.);
-            vertices.push_back(1.);
-            vertices.push_back(0.);
-            vertices.push_back(0.);
+            vertices.push_back(fillColor.red);
+            vertices.push_back(fillColor.green);
+            vertices.push_back(fillColor.blue);
+            vertices.push_back(fillColor.alpha);
         }
     }
     return vertices;
@@ -109,3 +88,36 @@ const Point2D &Triangle::getPointC() const {
 void Triangle::setFilled(bool filled) {
     Triangle::filled = filled;
 }
+
+TriangleBuilder Triangle::make(const Point2D &pointA, const Point2D &pointB, const Point2D &pointC) {
+    return TriangleBuilder(pointA, pointB, pointC);
+}
+
+TriangleBuilder &TriangleBuilder::withThickness(const float &thickness) {
+    triangle.thickness = thickness;
+    return *this;
+}
+
+TriangleBuilder &TriangleBuilder::withJoint(const JointType &jointType) {
+    triangle.jointType = jointType;
+    return *this;
+}
+
+TriangleBuilder &TriangleBuilder::withStrokeColor(RGBA rgba) {
+    triangle.strokeColor = rgba;
+    return *this;
+}
+
+TriangleBuilder &TriangleBuilder::withFillColor(RGBA rgba) {
+    triangle.fillColor = rgba;
+    return *this;
+}
+
+TriangleBuilder &TriangleBuilder::filled() {
+    triangle.filled = true;
+    return *this;
+}
+
+TriangleBuilder::TriangleBuilder(const Point2D &pointA,
+                                 const Point2D &pointB,
+                                 const Point2D &pointC): triangle(pointA, pointB, pointC) {}
