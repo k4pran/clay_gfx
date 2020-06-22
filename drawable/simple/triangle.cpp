@@ -42,6 +42,7 @@ std::vector<float> Triangle::asVertices() {
         for (auto &innerPoint : innerPoints) {
             vertices.push_back(innerPoint.x);
             vertices.push_back(innerPoint.y);
+            vertices.push_back(0);
 
             vertices.push_back(fillColor.red);
             vertices.push_back(fillColor.green);

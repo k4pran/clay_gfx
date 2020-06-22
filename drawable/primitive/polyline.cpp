@@ -3,7 +3,6 @@
 //
 
 #include "polyline.h"
-#include "../../geometry/anchor.h"
 
 Polyline::Polyline() : thickness(0.05), jointType(JointType::MITER), capType(CapType::SQUARE){};
 
