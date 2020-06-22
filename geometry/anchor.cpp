@@ -120,6 +120,10 @@ std::vector<Point2D> AnchorMetrics::triangulateAnchored() const {
         std::vector<Point2D> miterVertices = triangulateMiterJoint();
         vertices.insert(vertices.end(), miterVertices.begin(), miterVertices.end());
     }
+    else if (anchor.jointType == JointType::BEVEL) {
+        std::vector<Point2D> bevelVertices = triangulateBevelJoint();
+        vertices.insert(vertices.end(), bevelVertices.begin(), bevelVertices.end());
+    }
     else if (anchor.jointType == JointType::ROUND) {
         std::vector<Point2D> roundVertices = triangulateRoundJoint();
         vertices.insert(vertices.end(), roundVertices.begin(), roundVertices.end());
@@ -191,6 +195,31 @@ std::vector<Point2D> AnchorMetrics::triangulateLineRects() const {
             endVert1, endVert2, endVert3,
             endVert4, endVert5, endVert6};
 }
+
+std::vector<Point2D> AnchorMetrics::triangulateBevelJoint() const {
+    std::vector<Point2D> vertices;
+
+    Point2D centerBorderA = anchor.center.translateCopy(beginToBorder);
+    Point2D centerBorderB = anchor.center.translateCopy(endToBorder);
+    Point2D beginBorder = anchor.begin.translateCopy(beginToBorder);
+    Point2D endBorder = anchor.end.translateCopy(endToBorder);
+    Intercept intersection = findIntersection({beginBorder, centerBorderA}, {endBorder, centerBorderB});
+
+    Point2D intersectionPoint = intersection.intercept;
+
+    Vector2D centerToJoint3 = Vector2D{points2DtoVector2D(anchor.center, intersectionPoint)};
+
+    Point2D centerVert1 = anchor.center.translateCopy(centerToJoint3.reverseCopy());
+    Point2D centerVert2 = anchor.center.translateCopy(beginToBorder);
+    Point2D centerVert3 = anchor.center.translateCopy(endToBorder);
+
+    vertices.push_back(centerVert1);
+    vertices.push_back(centerVert2);
+    vertices.push_back(centerVert3);
+
+    return vertices;
+}
+
 
 std::vector<Point2D> AnchorMetrics::triangulateMiterJoint() const {
     std::vector<Point2D> vertices;

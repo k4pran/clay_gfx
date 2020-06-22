@@ -48,6 +48,8 @@ struct AnchorMetrics {
 
     std::vector<Point2D> triangulateMiterJoint() const;
 
+    std::vector<Point2D> triangulateBevelJoint() const;
+
     std::vector<Point2D> triangulateRoundJoint() const;
 
     std::vector<Point2D> triangulateLineRects() const;
