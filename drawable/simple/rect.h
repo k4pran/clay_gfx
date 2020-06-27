@@ -51,30 +51,15 @@ class RectBuilder {
 public:
     RectBuilder(const Point2D &pointA, const Point2D &pointB, const Point2D &pointC, const Point2D &pointD);
 
-    RectBuilder& withThickness(const float &thickness) {
-        rect.thickness = thickness;
-        return *this;
-    }
+    RectBuilder& withThickness(const float &thickness);
 
-    RectBuilder& withJoint(const JointType &jointType) {
-        rect.jointType = jointType;
-        return *this;
-    }
+    RectBuilder& withJoint(const JointType &jointType);
 
-    RectBuilder& filled() {
-        rect.filled = true;
-        return *this;
-    }
+    RectBuilder& filled();
 
-    RectBuilder & withStrokeColor(RGBA rgba) {
-        rect.strokeColor = rgba;
-        return *this;
-    }
+    RectBuilder & withStrokeColor(RGBA rgba);
 
-    RectBuilder & withFillColor(RGBA rgba) {
-        rect.fillColor = rgba;
-        return *this;
-    }
+    RectBuilder & withFillColor(RGBA rgba);
 
     operator Rect &&() {
         return std::move(rect);

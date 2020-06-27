@@ -263,54 +263,57 @@ std::vector<Point2D> AnchorMetrics::triangulateRoundJoint() const {
 
     Vector2D centerToJoint3 = Vector2D{points2DtoVector2D(anchor.center, intersection.intercept)};
 
-    Point2D arcOrigin = anchor.center.translateCopy(centerToJoint3.reverseCopy());
+    Point2D innerJoint = anchor.center.translateCopy(centerToJoint3.reverseCopy());
 
-    Vector2D arcStart = points2DtoVector2D(arcOrigin, centerBorderA);
+    Vector2D arcStart = points2DtoVector2D(anchor.center, centerBorderA);
     arcStart.normalize();
 
-    Vector2D arcEnd = points2DtoVector2D(arcOrigin, centerBorderB);
+    Vector2D arcEnd = points2DtoVector2D(anchor.center, centerBorderB);
     arcEnd.normalize();
 
     float arcStartAngle = acos(arcStart.x);
     float arcEndAngle = acos(arcEnd.x);
 
-    if (arcStart.y > 0){
+    if (arcStart.y < 0){
         arcStartAngle = 2 * M_PI - arcStartAngle;
     }
-    if (arcEnd.y > 0){
+    if (arcEnd.y < 0){
         arcEndAngle = 2 * M_PI - arcEndAngle;
     }
 
-    float radius = Point2D::pointDistance(centerBorderA, arcOrigin);
+    float radius = Point2D::pointDistance(centerBorderA, anchor.center);
 
-    bool incremental = true;
-    if (arcStartAngle > arcEndAngle) {
-        incremental = false; // decrement
+    int startAngDegrees = arcStartAngle *  180. / M_PI;
+    int endAngDegrees = arcEndAngle * 180. / M_PI;
+
+    float shortestAngle = (((endAngDegrees - startAngDegrees) + 180) % 360 - 180);
+    if (abs(shortestAngle > 180)) {
+        shortestAngle = (((startAngDegrees - endAngDegrees) + 180) % 360 - 180);
     }
+    float angleDistanceRad = (shortestAngle * M_PI) / 180;
 
     std::vector<Point2D> jointVerts;
-    if ( incremental) {
-        for (float a = arcStartAngle; a < arcEndAngle; a += M_PI / 18) {
-            float x = cos(a);
-            float y = sin(a);
-            jointVerts.push_back({arcOrigin.x + x * radius, arcOrigin.y - y * radius});
-        }
-    }
-    else {
-        for (float a = arcStartAngle; a > arcEndAngle; a -= M_PI / 18) {
-            float x = cos(a);
-            float y = sin(a);
-            jointVerts.push_back({arcOrigin.x + x * radius, arcOrigin.y - y * radius});
-        }
+    for (float increment = 0; fabs(increment) < fabs(angleDistanceRad); increment +=(angleDistanceRad / 8)) {
+        float x = cos(arcStartAngle + increment);
+        float y = sin(arcStartAngle + increment);
+        jointVerts.push_back({anchor.center.x + x * radius, anchor.center.y + y * radius});
     }
 
     for (int i = 1; i < jointVerts.size(); i++) {
-        vertices.push_back(arcOrigin);
+        vertices.push_back(anchor.center);
         vertices.push_back(jointVerts.at(i - 1));
         vertices.push_back(jointVerts.at(i));
     }
-    vertices.push_back(arcOrigin);
+    vertices.push_back(anchor.center);
     vertices.push_back(jointVerts.back());
+    vertices.push_back(centerBorderB);
+
+    vertices.push_back(innerJoint);
+    vertices.push_back(anchor.center);
+    vertices.push_back(centerBorderA);
+
+    vertices.push_back(innerJoint);
+    vertices.push_back(anchor.center);
     vertices.push_back(centerBorderB);
 
     return vertices;

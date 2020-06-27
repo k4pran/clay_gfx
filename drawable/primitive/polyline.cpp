@@ -30,12 +30,13 @@ std::vector<float> Polyline::asVertices() {
     for (auto & triangulatedPoint : triangulatedPoints) {
         vertices.push_back(triangulatedPoint.x);
         vertices.push_back(triangulatedPoint.y);
+        vertices.push_back(0);
 
         // color todo
         vertices.push_back(0.);
         vertices.push_back(0.);
         vertices.push_back(0.);
-        vertices.push_back(0.);
+        vertices.push_back(1.);
     }
     return vertices;
 }

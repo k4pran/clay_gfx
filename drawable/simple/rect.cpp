@@ -110,3 +110,28 @@ RectBuilder::RectBuilder(const Point2D &pointA,
                          const Point2D &pointB,
                          const Point2D &pointC,
                          const Point2D &pointD): rect(pointA, pointB, pointC, pointD) {}
+
+RectBuilder& RectBuilder::withThickness(const float &thickness) {
+    rect.thickness = thickness;
+    return *this;
+}
+
+RectBuilder& RectBuilder::withJoint(const JointType &jointType) {
+    rect.jointType = jointType;
+    return *this;
+}
+
+RectBuilder& RectBuilder::filled() {
+    rect.filled = true;
+    return *this;
+}
+
+RectBuilder & RectBuilder::withStrokeColor(RGBA rgba) {
+    rect.strokeColor = rgba;
+    return *this;
+}
+
+RectBuilder & RectBuilder::withFillColor(RGBA rgba) {
+    rect.fillColor = rgba;
+    return *this;
+}
