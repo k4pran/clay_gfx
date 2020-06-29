@@ -4,13 +4,8 @@
 
 #include "polyline.h"
 
-Polyline::Polyline() : thickness(0.05), jointType(JointType::MITER), capType(CapType::SQUARE){};
 
-Polyline::Polyline(std::vector<Point2D> points, float thickness):
-points(points), thickness(thickness), jointType(JointType::MITER), capType(CapType::SQUARE){};
-
-Polyline::Polyline(std::vector<Point2D> points, float thickness, JointType jointType, CapType capType):
-points(points), thickness(thickness), jointType(jointType), capType(capType){};
+Polyline::Polyline(std::vector<Point2D> points): points(points){};
 
 int Polyline::nbLines() const {
     return points.size() - 1;
@@ -33,10 +28,31 @@ std::vector<float> Polyline::asVertices() {
         vertices.push_back(0);
 
         // color todo
-        vertices.push_back(0.);
-        vertices.push_back(0.);
-        vertices.push_back(0.);
-        vertices.push_back(1.);
+        vertices.push_back(strokeColor.red);
+        vertices.push_back(strokeColor.green);
+        vertices.push_back(strokeColor.blue);
+        vertices.push_back(strokeColor.alpha);
     }
     return vertices;
+}
+
+PolylineBuilder Polyline::make(std::vector<Point2D> points) {
+    return PolylineBuilder(points);
+}
+
+PolylineBuilder::PolylineBuilder(std::vector<Point2D> points): polyline(points) {}
+
+PolylineBuilder& PolylineBuilder::withThickness(const float &thickness) {
+    polyline.thickness = thickness;
+    return *this;
+}
+
+PolylineBuilder& PolylineBuilder::withJoint(const JointType &jointType) {
+    polyline.jointType = jointType;
+    return *this;
+}
+
+PolylineBuilder & PolylineBuilder::withStrokeColor(RGBA rgba) {
+    polyline.strokeColor = rgba;
+    return *this;
 }
