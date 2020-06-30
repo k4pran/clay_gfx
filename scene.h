@@ -6,6 +6,7 @@
 #define OPENGL_TUTORIAL_SCENE_H
 
 #include <string>
+#include <map>
 
 class Scene {
 
@@ -18,6 +19,7 @@ class Scene {
     unsigned int defaultVertShader;
     unsigned int defaultFragShader;
 
+    std::map<unsigned int, std::vector<float>> VBOs;
     unsigned int VAO;
 
     static void framebuffer_size_callback(GLFWwindow* window, int width, int height);
@@ -27,6 +29,7 @@ class Scene {
     void cleanupShaders();
     void initGlad();
     void initShaders();
+    void initDefaultVAO();
 
 public:
     Scene(const char *windowTitle, unsigned int screenWidth, unsigned int screenHeight);
@@ -34,11 +37,11 @@ public:
 public:
     void init();
 
-    unsigned int generateBuffer();
+    unsigned int generateVBO();
 
-    void bindBuffer(unsigned int bufferId, const std::vector<float> &vertices);
+    void bindVBO(unsigned int vbo, const std::vector<float> &vertices);
 
-    unsigned int bindArray(unsigned int bufferId, const std::vector<float> &vertices);
+    unsigned int bindVAO(unsigned int vbo);
 
     void enableAlpha();
 

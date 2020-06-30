@@ -18,7 +18,7 @@ int main()
 
     Scene scene = Scene(title.c_str(), width, height);
     scene.init();
-    unsigned int rectVertId = scene.generateBuffer();
+    unsigned int rectVertId = scene.generateVBO();
 
 //    Point2D p1 = {-0.15, -0.15};
 //    Point2D p2 = {-0.15, 0.15};
@@ -38,9 +38,9 @@ int main()
             .withStrokeColor({1, 0, 1, 1});
 
     std::vector<float> vertices = circle.asVertices();
-    scene.bindBuffer(rectVertId, vertices);
+    scene.bindVBO(rectVertId, vertices);
 
-    scene.bindArray(rectVertId, vertices);
+//    scene.bindVAO(rectVertId, vertices);
 //    scene.enableWireFrameMode();
     scene.render();
 

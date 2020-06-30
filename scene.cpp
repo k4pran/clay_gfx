@@ -54,6 +54,7 @@ void Scene::init() {
 
     initGlad();
     initShaders();
+    initDefaultVAO();
 }
 
 void Scene::initGlad() {
@@ -125,6 +126,12 @@ void Scene::render() {
         glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
 
+        bindVAO(1); // todo do dynamically
+
+        for (auto const& vbo : VBOs) {
+            bindVAO(vbo.first);
+        }
+
         glUseProgram(shaderProgram);
         glBindVertexArray(VAO);
         glDrawArrays(GL_TRIANGLES, 0, 1000000);
@@ -140,21 +147,26 @@ void Scene::cleanupShaders() {
     glDeleteShader(defaultFragShader);
 }
 
-unsigned int Scene::generateBuffer() {
+unsigned int Scene::generateVBO() {
     unsigned int VBO;
     glGenBuffers(1, &VBO);
     return VBO;
 }
 
-void Scene::bindBuffer(unsigned int bufferId, const std::vector<float> &vertices) {
-    glBindBuffer(GL_ARRAY_BUFFER, bufferId);
-    glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(float), &vertices.front(), GL_STATIC_DRAW);
+void Scene::bindVBO(unsigned int VBO, const std::vector<float> &vertices) {
+    glBindBuffer(GL_ARRAY_BUFFER, VBO);
+    VBOs.insert(std::make_pair(VBO, vertices));
 }
 
-unsigned int Scene::bindArray(unsigned int bufferId, const std::vector<float> &vertices) {
+void Scene::initDefaultVAO() {
     glGenVertexArrays(1, &VAO);
+}
+
+unsigned int Scene::bindVAO(unsigned int vbo) {
+    std::vector<float> vertices = VBOs[vbo];
     glBindVertexArray(VAO);
-    glBindBuffer(GL_ARRAY_BUFFER, bufferId);
+
+    glBindBuffer(GL_ARRAY_BUFFER, vbo);
     glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(float), &vertices.front(), GL_STATIC_DRAW);
 
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 7 * sizeof(float), (void*)nullptr);
