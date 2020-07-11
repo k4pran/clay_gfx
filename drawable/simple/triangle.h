@@ -52,9 +52,9 @@ public:
 
     TriangleBuilder& withJoint(const JointType &jointType);
 
-    TriangleBuilder& withStrokeColor(const RGBA rgba);
+    TriangleBuilder& withStrokeColor(const RGBA strokeColor);
 
-    TriangleBuilder& withFillColor(const RGBA rgba);
+    TriangleBuilder& withFillColor(const RGBA fillColor);
 
     TriangleBuilder& filled();
 

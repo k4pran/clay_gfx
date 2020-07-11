@@ -104,13 +104,13 @@ TriangleBuilder &TriangleBuilder::withJoint(const JointType &jointType) {
     return *this;
 }
 
-TriangleBuilder &TriangleBuilder::withStrokeColor(RGBA rgba) {
-    triangle.strokeColor = rgba;
+TriangleBuilder &TriangleBuilder::withStrokeColor(RGBA strokeColor) {
+    triangle.strokeColor = strokeColor;
     return *this;
 }
 
-TriangleBuilder &TriangleBuilder::withFillColor(RGBA rgba) {
-    triangle.fillColor = rgba;
+TriangleBuilder &TriangleBuilder::withFillColor(RGBA fillColor) {
+    triangle.fillColor = fillColor;
     return *this;
 }
 

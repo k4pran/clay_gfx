@@ -57,9 +57,9 @@ public:
 
     RectBuilder& filled();
 
-    RectBuilder & withStrokeColor(RGBA rgba);
+    RectBuilder & withStrokeColor(RGBA strokeColor);
 
-    RectBuilder & withFillColor(RGBA rgba);
+    RectBuilder & withFillColor(RGBA fillColor);
 
     operator Rect &&() {
         return std::move(rect);

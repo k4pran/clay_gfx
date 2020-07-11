@@ -6,6 +6,7 @@
 #include "drawable/simple/triangle.h"
 #include "scene.h"
 #include "drawable/simple/circle.h"
+#include "drawable/primitive/line.h"
 
 int main()
 {
@@ -32,12 +33,14 @@ int main()
 //            .withFillColor({0, 0, 0, 1})
 //            .withStrokeColor({1, 0, 0, 1});
 
-    Circle circle = Circle::make({0, 0}, 0.5)
-            .filled()
-            .withFillColor({0, 1, 0, 1})
-            .withStrokeColor({1, 0, 1, 1});
+//    Circle circle = Circle::make({0, 0}, 0.5)
+//            .filled()
+//            .withFillColor({0, 1, 0, 1})
+//            .withStrokeColor({1, 0, 1, 1});
 
-    std::vector<float> vertices = circle.asVertices();
+    Line line = Line::make({0, 0}, {0.2, 0.2});
+
+    std::vector<float> vertices = line.asVertices();
     scene.bindVBO(rectVertId, vertices);
 
 //    scene.bindVAO(rectVertId, vertices);

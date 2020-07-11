@@ -126,12 +126,12 @@ RectBuilder& RectBuilder::filled() {
     return *this;
 }
 
-RectBuilder & RectBuilder::withStrokeColor(RGBA rgba) {
-    rect.strokeColor = rgba;
+RectBuilder & RectBuilder::withStrokeColor(RGBA strokeColor) {
+    rect.strokeColor = strokeColor;
     return *this;
 }
 
-RectBuilder & RectBuilder::withFillColor(RGBA rgba) {
-    rect.fillColor = rgba;
+RectBuilder & RectBuilder::withFillColor(RGBA fillColor) {
+    rect.fillColor = fillColor;
     return *this;
 }

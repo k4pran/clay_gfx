@@ -81,18 +81,22 @@ void Circle::setFilled(bool filled) {
     Circle::filled = filled;
 }
 
+const Point2D &Circle::getCenter() const {
+    return center;
+}
+
 CircleBuilder &CircleBuilder::withThickness(const float &thickness) {
     circle.thickness = thickness;
     return *this;
 }
 
-CircleBuilder &CircleBuilder::withStrokeColor(RGBA rgba) {
-    circle.strokeColor = rgba;
+CircleBuilder &CircleBuilder::withStrokeColor(RGBA strokeColor) {
+    circle.strokeColor = strokeColor;
     return *this;
 }
 
-CircleBuilder &CircleBuilder::withFillColor(RGBA rgba) {
-    circle.fillColor = rgba;
+CircleBuilder &CircleBuilder::withFillColor(RGBA fillColor) {
+    circle.fillColor = fillColor;
     return *this;
 }
 

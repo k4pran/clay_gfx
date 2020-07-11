@@ -41,9 +41,9 @@ public:
 
     CircleBuilder& withThickness(const float &thickness);
 
-    CircleBuilder& withStrokeColor(const RGBA rgba);
+    CircleBuilder& withStrokeColor(const RGBA strokeColor);
 
-    CircleBuilder& withFillColor(const RGBA rgba);
+    CircleBuilder& withFillColor(const RGBA fillColor);
 
     CircleBuilder& filled();
 

@@ -1,18 +1,13 @@
 //
-// Created by Ryan McCauley on 06/06/2020.
+// Created by Ryan McCauley on 11/07/2020.
 //
 
-#include "polyline.h"
+#include "line.h"
 
+Line::Line(Point2D start, Point2D end): start(start), end(end){};
 
-Polyline::Polyline(std::vector<Point2D> points): points(points){};
-
-int Polyline::nbLines() const {
-    return points.size() - 1;
-}
-
-std::vector<float> Polyline::asVertices() {
-    std::vector<Anchor> anchors = Anchor::createAnchors(points, jointType, capType);
+std::vector<float> Line::asVertices() {
+    std::vector<Anchor> anchors = Anchor::createAnchors({start, end}, JointType::BEVEL, capType);
 
     std::vector<Point2D> triangulatedPoints;
     for (auto & anchor : anchors) {
@@ -35,23 +30,23 @@ std::vector<float> Polyline::asVertices() {
     return vertices;
 }
 
-PolylineBuilder Polyline::make(std::vector<Point2D> points) {
-    return PolylineBuilder(points);
+LineBuilder Line::make(Point2D start, Point2D end) {
+    return LineBuilder(start, end);
 }
 
-PolylineBuilder::PolylineBuilder(std::vector<Point2D> points): polyline(points) {}
+LineBuilder::LineBuilder(Point2D start, Point2D end): line(start, end) {}
 
-PolylineBuilder& PolylineBuilder::withThickness(const float &thickness) {
-    polyline.thickness = thickness;
+LineBuilder& LineBuilder::withThickness(const float &thickness) {
+    line.thickness = thickness;
     return *this;
 }
 
-PolylineBuilder& PolylineBuilder::withJoint(const JointType &jointType) {
-    polyline.jointType = jointType;
+LineBuilder& LineBuilder::withStrokeColor(RGBA rgba) {
+    line.strokeColor = rgba;
     return *this;
 }
 
-PolylineBuilder & PolylineBuilder::withStrokeColor(RGBA rgba) {
-    polyline.strokeColor = rgba;
+LineBuilder& LineBuilder::withCapType(CapType capType) {
+    line.capType = capType;
     return *this;
 }
