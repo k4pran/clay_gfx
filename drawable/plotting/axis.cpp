@@ -2,7 +2,6 @@
 // Created by Ryan McCauley on 30/06/2020.
 //
 
-#include <cmath>
 #include "axis.h"
 #include "../../geometry/line-metrics.h"
 
@@ -13,12 +12,31 @@ AxisBuilder Axis::make(AxisType axisType, Boundary boundary) {
 }
 
 std::vector<float> Axis::asVertices() {
-    std::vector<Point2D> vertices;
+    std::vector<float> vertices;
 
     std::vector<Point2D> spinePoints = createSpine();
-    std::vector<Point2D> ticks = createTicks(spinePoints.back(),spinePoints.front());
+    std::vector<float> spineVertices = spineAsVertices(spinePoints);
+//    std::vector<float> ticks = ticksAsVertices(spinePoints.back(), spinePoints.front());
 
-    return std::vector<float>();
+    vertices.insert(vertices.end(), spineVertices.begin(), spineVertices.end());
+//    vertices.insert(vertices.end(), ticks.begin(), ticks.end());
+
+    return vertices;
+}
+
+std::vector<float> Axis::spineAsVertices(std::vector<Point2D> spinePoints) {
+    Line spine = Line::make(spinePoints[0], spinePoints[1]);
+    return spine.asVertices();
+}
+
+std::vector<float> Axis::ticksAsVertices(Point2D start, Point2D end) {
+    std::vector<Line> ticks = createTicks(start, end);
+    std::vector<float> tickVertices;
+    for (auto tick : ticks) {
+        std::vector<float> lineVertices = tick.asVertices();
+        tickVertices.insert(tickVertices.end(), lineVertices.begin(), lineVertices.end());
+    }
+    return tickVertices;
 }
 
 std::vector<Point2D> Axis::createSpine() {
@@ -49,7 +67,7 @@ std::vector<Point2D> Axis::createVerticalSpine() {
     return {topAxisPoint, bottomAxisPoint};
 }
 
-std::vector<Point2D> Axis::createTicks(Point2D start, Point2D end) {
+std::vector<Line> Axis::createTicks(Point2D start, Point2D end) {
     if (axisType == AxisType::HORIZONTAL) {
         return createHorizontalAxisTicks(start, end);
     }
@@ -59,34 +77,34 @@ std::vector<Point2D> Axis::createTicks(Point2D start, Point2D end) {
     return {};
 }
 
-std::vector<Point2D> Axis::createHorizontalAxisTicks(Point2D start, Point2D end) {
+std::vector<Line> Axis::createHorizontalAxisTicks(Point2D start, Point2D end) {
     if (range.min > range.max) {
         // todo error
         return {};
     }
     float inc = determineTickSpacing(start, end);
-    std::vector<Point2D> tickPoints;
+    std::vector<Line> ticks;
     const float y = start.y;
     for (int i = 0; i < nbTicks; i++) {
-        tickPoints.push_back({start.x + i * inc, y});
-        tickPoints.push_back({start.x + i * inc, y + TICK_LENGTH});
+        Line tick = Line::make({start.x + i * inc, y}, {start.x + i * inc, y + TICK_LENGTH});
+        ticks.push_back(tick);
     }
-    return tickPoints;
+    return ticks;
 }
 
-std::vector<Point2D> Axis::createVerticalAxisTicks(Point2D start, Point2D end) {
+std::vector<Line> Axis::createVerticalAxisTicks(Point2D start, Point2D end) {
     if (range.min > range.max) {
         // todo error
         return {};
     }
     float inc = determineTickSpacing(start, end);
-    std::vector<Point2D> tickPoints;
+    std::vector<Line> ticks;
     const float x = start.x;
     for (int i = 0; i < nbTicks; i++) {
-        tickPoints.push_back({x, start.y + i * inc});
-        tickPoints.push_back({x + TICK_LENGTH, start.y + i * inc});
+        Line tick = Line::make({x, start.y + i * inc}, {x + TICK_LENGTH, start.y + i * inc});
+        ticks.push_back(tick);
     }
-    return tickPoints;
+    return ticks;
 }
 
 float Axis::determineTickSpacing(Point2D &start, Point2D &end) {
@@ -112,7 +130,7 @@ AxisBuilder &AxisBuilder::withNbTicks(int nbTcks) {
 
 
 AxisBuilder& AxisBuilder::withTicks(bool ticks) {
-    axis.ticks = ticks;
+    axis.drawTicks = ticks;
     return *this;
 }
 

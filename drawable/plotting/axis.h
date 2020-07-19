@@ -9,6 +9,7 @@
 #include "../drawable.h"
 #include "../attribute/range.h"
 #include "../attribute/boundary.h"
+#include "../primitive/line.h"
 
 class AxisBuilder;
 enum class AxisType;
@@ -20,7 +21,7 @@ class Axis: Drawable {
     Boundary boundary;
     Range range = {-100, 100};
     int nbTicks = 10;
-    bool ticks = false;
+    bool drawTicks = false;
     float thickness = 0.02;
     RGBA strokeColor = {0.0, 0.0, 0.0, 1.0};
 
@@ -28,9 +29,9 @@ class Axis: Drawable {
     std::vector<Point2D> createHorizontalSpine();
     std::vector<Point2D> createVerticalSpine();
 
-    std::vector<Point2D> createTicks(Point2D start, Point2D end);
-    std::vector<Point2D> createHorizontalAxisTicks(Point2D start, Point2D end);
-    std::vector<Point2D> createVerticalAxisTicks(Point2D start, Point2D end);
+    std::vector<Line> createTicks(Point2D start, Point2D end);
+    std::vector<Line> createHorizontalAxisTicks(Point2D start, Point2D end);
+    std::vector<Line> createVerticalAxisTicks(Point2D start, Point2D end);
     float determineTickSpacing(Point2D &start, Point2D &end);
 
 public:
@@ -41,6 +42,10 @@ public:
     static AxisBuilder make(AxisType axisType, Boundary boundary);
 
     std::vector<float> asVertices() override;
+
+    std::vector<float> spineAsVertices(std::vector<Point2D> spinePoints);
+
+    std::vector<float> ticksAsVertices(Point2D start, Point2D end);
 };
 
 class AxisBuilder {
@@ -60,7 +65,7 @@ public:
     AxisBuilder& withStrokeColor(RGBA rgba);
 
 
-    explicit operator Axis &&() {
+    operator Axis &&() {
         return std::move(axis);
     }
 

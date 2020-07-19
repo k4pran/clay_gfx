@@ -90,7 +90,7 @@ std::vector<Point2D> AnchorMetrics::triangulate() const {
 
     Point2D centerBorderA = anchor.center.translateCopy(beginToBorder);
     Point2D centerBorderB = anchor.center.translateCopy(endToBorder);
-    Point2D beginBorder = anchor.center.translateCopy(beginToBorder);
+    Point2D beginBorder = anchor.begin.translateCopy(beginToBorder);
     Point2D endBorder = anchor.end.translateCopy(endToBorder);
 
     Intercept intersection = findIntersection({beginBorder, centerBorderA}, {endBorder, centerBorderB});

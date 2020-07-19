@@ -6,7 +6,7 @@
 #include "line-metrics.h"
 #include "../common/float_approximator.h"
 
-float EPSILON = 0.000001;
+float EPSILON = 0.00001;
 
 float LineMetrics::findSlope() const { // todo handle undefined slope
     float rise = this->pointB.y - this->pointA.y;
@@ -61,7 +61,10 @@ Intercept findIntersection(const LineMetrics& lineA, const LineMetrics& lineB) {
         return {InterceptResult::COLLINEAR, std::numeric_limits<float>::quiet_NaN()};
     }
 
-    if (slopeA == std::numeric_limits<float>::infinity()) {
+    if (slopeA == std::numeric_limits<float>::infinity() && slopeB == std::numeric_limits<float>::infinity()) {
+        return {InterceptResult::COLLINEAR, std::numeric_limits<float>::quiet_NaN()};
+    }
+    else if (slopeA == std::numeric_limits<float>::infinity()) {
         float y = slopeB * lineA.pointA.x + yInterceptB; // todo move to own function
         return {InterceptResult::SINGLE, Point2D{lineA.pointA.x, y}};
     }
