@@ -15,8 +15,8 @@ class AxisBuilder;
 enum class AxisType;
 class Axis: Drawable {
 
-    const float TICK_LENGTH = 0.015;
-    const float ENDPOINT_PADDING = 0.05;
+    float TICK_LENGTH = 0.015;
+    float ENDPOINT_PADDING = 0.05;
     const char *title = "";
     AxisType axisType;
     Boundary boundary;
