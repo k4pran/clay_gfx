@@ -54,7 +54,6 @@ void Scene::init() {
 
     initGlad();
     initShaders();
-    initDefaultVAO();
 }
 
 void Scene::initGlad() {
@@ -126,15 +125,13 @@ void Scene::render() {
         glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
 
-        bindVAO(1); // todo do dynamically
-
-        for (auto const& vbo : VBOs) {
-            bindVAO(vbo.first);
+        for (auto const& renderable : renderables) {
+            bindVAO(renderable.second);
+            glUseProgram(shaderProgram);
+            glBindVertexArray(renderable.first);
+            glDrawArrays(GL_TRIANGLES, 0, 1000000);
         }
 
-        glUseProgram(shaderProgram);
-        glBindVertexArray(VAO);
-        glDrawArrays(GL_TRIANGLES, 0, 1000000);
         glfwSwapBuffers(window);
         glfwPollEvents();
     }
@@ -154,19 +151,24 @@ unsigned int Scene::generateVBO() {
 }
 
 void Scene::bindVBO(unsigned int VBO, const std::vector<float> &vertices) {
+    if (idExists(VBO)) {
+        renderables[VBO].update(vertices);
+        return;
+    }
+    initVAO(VBO);
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
-    VBOs.insert(std::make_pair(VBO, vertices));
+    renderables.insert(std::pair<unsigned int, Renderable>(VBO, {VBO, vertices}));
 }
 
-void Scene::initDefaultVAO() {
-    glGenVertexArrays(1, &VAO);
+void Scene::initVAO(unsigned int id) {
+    glGenVertexArrays(1, &id);
 }
 
-unsigned int Scene::bindVAO(unsigned int vbo) {
-    std::vector<float> vertices = VBOs[vbo];
-    glBindVertexArray(VAO);
+unsigned int Scene::bindVAO(const Renderable& rend) {
+    std::vector<float> vertices = rend.vertices;
+    glBindVertexArray(rend.id);
 
-    glBindBuffer(GL_ARRAY_BUFFER, vbo);
+    glBindBuffer(GL_ARRAY_BUFFER, rend.id);
     glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(float), &vertices.front(), GL_STATIC_DRAW);
 
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 7 * sizeof(float), (void*)nullptr);
@@ -174,7 +176,12 @@ unsigned int Scene::bindVAO(unsigned int vbo) {
 
     glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, 7 * sizeof(float), (void*)(3 * sizeof(float)));
     glEnableVertexAttribArray(1);
-    return VAO;
+
+    return rend.id;
+}
+
+bool Scene::idExists(unsigned int id) {
+    return renderables.count(id);
 }
 
 void Scene::processInput(GLFWwindow *window)
