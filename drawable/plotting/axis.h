@@ -47,6 +47,8 @@ public:
     std::vector<float> spineAsVertices(std::vector<Point2D> spinePoints);
 
     std::vector<float> ticksAsVertices(Point2D start, Point2D end);
+
+
 };
 
 class AxisBuilder {
@@ -58,6 +60,8 @@ public:
     AxisBuilder& withRange(Range range);
 
     AxisBuilder& withNbTicks(int ticks);
+
+    AxisBuilder& withTicks(bool drawTicks);
 
     AxisBuilder& withTicks();
 

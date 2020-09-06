@@ -135,6 +135,10 @@ AxisBuilder &AxisBuilder::withNbTicks(int nbTcks) {
     return *this;
 }
 
+AxisBuilder &AxisBuilder::withTicks(bool drawTicks) {
+    axis.drawTicks = drawTicks;
+    return *this;
+}
 
 AxisBuilder &AxisBuilder::withTicks() {
     axis.drawTicks = true;

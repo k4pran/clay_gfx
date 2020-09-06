@@ -10,18 +10,28 @@
 #include "../primitive/color.h"
 #include "../drawable.h"
 #include "axis.h"
+#include <experimental/optional>
 
-class AxesBuilder;
+class AxesBuilder2D;
 class Axes2D: Drawable {
 
     Boundary boundary;
-    Axis vAxis;
-    Axis hAxis;
+    std::experimental::optional<Axis> vAxis;
+    std::experimental::optional<Axis> hAxis;
 
-    std::vector<float> asVertices() override;
+    const char *title = "";
+    Range range = {-100, 100};
+    int nbTicks = 10;
+    bool drawTicks = false;
+    float thickness = 0.02;
+    RGBA strokeColor = {0.0, 0.0, 0.0, 1.0};
 
 public:
     friend class AxesBuilder2D;
+
+    static AxesBuilder2D make(Boundary boundary);
+
+    std::vector<float> asVertices() override;
 
     Axes2D(Boundary boundary);
 };
