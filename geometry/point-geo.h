@@ -2,8 +2,8 @@
 // Created by Ryan McCauley on 25/05/2020.
 //
 
-#ifndef OPENGL_TUTORIAL_POINT_H
-#define OPENGL_TUTORIAL_POINT_H
+#ifndef OPENGL_TUTORIAL_POINT_GEO_H
+#define OPENGL_TUTORIAL_POINT_GEO_H
 
 #include "vector.h"
 

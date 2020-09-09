@@ -2,7 +2,7 @@
 // Created by Ryan McCauley on 20/06/2020.
 //
 
-#include "point.h"
+#include "point-geo.h"
 #include "tri-metrics.h"
 
 Point2D findCentroid(const Point2D& pointA, const Point2D& pointB, const Point2D& pointC) {

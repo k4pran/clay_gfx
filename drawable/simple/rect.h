@@ -5,7 +5,7 @@
 #ifndef OPENGL_TUTORIAL_RECT_H
 #define OPENGL_TUTORIAL_RECT_H
 
-#include "../../geometry/point.h"
+#include "../../geometry/point-geo.h"
 #include "../drawable.h"
 #include "../primitive/color.h"
 #include "../../geometry/anchor.h"

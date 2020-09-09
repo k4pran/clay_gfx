@@ -85,7 +85,7 @@ const Point2D &Circle::getCenter() const {
     return center;
 }
 
-CircleBuilder &CircleBuilder::withThickness(const float &thickness) {
+CircleBuilder &CircleBuilder::withThickness(float thickness) {
     circle.thickness = thickness;
     return *this;
 }

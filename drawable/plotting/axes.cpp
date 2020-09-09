@@ -16,12 +16,16 @@ std::vector<float> Axes2D::asVertices() {
     if (!vAxis) {
         vAxis = {Axis::make(AxisType::VERTICAL, boundary)
                          .withTicks(drawTicks)
-                         .withThickness(thickness)};
+                         .withThickness(thickness)
+                         .withNbTicks(nbTicks)
+                         .withRange(range).withStrokeColor(strokeColor)};
     }
     if (!hAxis) {
         hAxis = {Axis::make(AxisType::HORIZONTAL, boundary)
                          .withTicks(drawTicks)
-                         .withThickness(thickness)};
+                         .withThickness(thickness)
+                         .withNbTicks(nbTicks)
+                         .withRange(range).withStrokeColor(strokeColor)};
     }
 
     std::vector<float> vAxisVertices = vAxis->asVertices();

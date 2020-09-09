@@ -2,7 +2,7 @@
 // Created by Ryan McCauley on 20/06/2020.
 //
 
-#include "point.h"
+#include "point-geo.h"
 #include "../drawable/simple/triangle.h"
 
 #ifndef OPENGL_TUTORIAL_TRI_METRICS_H

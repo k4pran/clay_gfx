@@ -5,7 +5,7 @@
 #ifndef OPENGL_TUTORIAL_BOUNDARY_H
 #define OPENGL_TUTORIAL_BOUNDARY_H
 
-#include "../../geometry/point.h"
+#include "../../geometry/point-geo.h"
 
 struct Boundary {
     Point2D topLeft;

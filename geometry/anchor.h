@@ -5,7 +5,7 @@
 #ifndef OPENGL_TUTORIAL_ANCHOR_H
 #define OPENGL_TUTORIAL_ANCHOR_H
 
-#include "point.h"
+#include "point-geo.h"
 #include "vector.h"
 
 enum class CapType {
@@ -70,6 +70,12 @@ std::vector<Point2D> triangulateCap(const Point2D& beginSegment,
                                     const Point2D& segmentCornerB);
 
 std::vector<Point2D> triangulateSquareCap(const Point2D& beginSegment,
+                                          const Point2D& endSegment,
+                                          const AnchorMetrics& anchorMetrics,
+                                          const Point2D& segmentCornerA,
+                                          const Point2D& segmentCornerB);
+
+std::vector<Point2D> triangulateRoundCap(const Point2D& beginSegment,
                                           const Point2D& endSegment,
                                           const AnchorMetrics& anchorMetrics,
                                           const Point2D& segmentCornerA,

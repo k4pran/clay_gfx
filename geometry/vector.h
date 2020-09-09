@@ -5,7 +5,7 @@
 #ifndef OPENGL_TUTORIAL_VECTOR_H
 #define OPENGL_TUTORIAL_VECTOR_H
 
-#include "point.h"
+#include "point-geo.h"
 
 struct Point2D;
 struct Vector2D {

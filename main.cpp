@@ -8,9 +8,10 @@
 #include "drawable/simple/circle.h"
 #include "drawable/primitive/line.h"
 #include "drawable/plotting/axis.h"
+#include "drawable/plotting/axes.h"
+#include "drawable/simple/point.h"
 
-int main()
-{
+int main() {
     YAML::Node config = YAML::LoadFile("../config.yaml");
     YAML::Node windowConfig = config["window"];
 
@@ -43,24 +44,47 @@ int main()
 //
 //    std::vector<float> vertices = line.asVertices();
 
-    Axis axis = Axis::make(AxisType::VERTICAL, {
-            {-0.8, 0.8},
-            {0.8, 0.8},
-            {-0.8, -0.8},
-            {0.8, -0.8}
-    }).withThickness(0.01);
+//    Axis axis = Axis::make(AxisType::VERTICAL, {
+//            {-0.8, 0.8},
+//            {0.8, 0.8},
+//            {-0.8, -0.8},
+//            {0.8, -0.8}
+//    }).withThickness(0.01)
+//            .withTicks();
+//
+//    Axis axis2 = Axis::make(AxisType::HORIZONTAL, {
+//            {-0.8, 0.8},
+//            {0.8, 0.8},
+//            {-0.8, -0.8},
+//            {0.8, -0.8}
+//    }).withThickness(0.01);
+//
+//    Axes2D axes2D = Axes2D::make({
+//                                         {-0.8, 0.8},
+//                                         {0.8,  0.8},
+//                                         {-0.8, -0.8},
+//                                         {0.8,  -0.8}
+//                                 })
+//                                         .withThickness(0.01)
+//                                         .withNbTicks(50)
+//                                         .withTicks();
 
-    Axis axis2 = Axis::make(AxisType::HORIZONTAL, {
-            {-0.8, 0.8},
-            {0.8, 0.8},
-            {-0.8, -0.8},
-            {0.8, -0.8}
-    }).withThickness(0.01)
-            .withTicks();
+//    axis2.asVertices();
+//    std::vector<float> vertices = axes2D.asVertices();
 
-    std::vector<float> vertices = axis.asVertices();
-    scene.bindVBO(rectVertId, vertices);
-    scene.bindVBO(rectVertId, axis2.asVertices());
+//    Point point = Point::make({0.2, 0.2});
+//
+    Line line = Line::make({0.3, 0.4}, {-0.3, 0})
+            .withThickness(0.05)
+            .withCapType(CapType::ROUND);
+
+
+//    scene.bindVBO(scene.generateVBO(), vertices);
+
+//    scene.bindVBO(rectVertId, axis.asVertices());
+//    scene.bindVBO(rectVertId, vertices);
+//    scene.bindVBO(rectVertId, point.asVertices());
+    scene.bindVBO(rectVertId, line.asVertices());
 //    scene.bindVAO(rectVertId, vertices);
 //    scene.enableWireFrameMode();
     scene.render();

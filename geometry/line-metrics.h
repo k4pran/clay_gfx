@@ -6,7 +6,7 @@
 #define OPENGL_TUTORIAL_LINE_METRICS_H
 
 #include <vector>
-#include "point.h"
+#include "point-geo.h"
 
 struct LineMetrics {
     Point2D pointA, pointB;

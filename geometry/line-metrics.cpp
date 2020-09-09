@@ -2,7 +2,7 @@
 // Created by Ryan McCauley on 27/05/2020.
 //
 
-#include "point.h"
+#include "point-geo.h"
 #include "line-metrics.h"
 #include "../common/float_approximator.h"
 

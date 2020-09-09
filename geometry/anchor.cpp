@@ -155,7 +155,7 @@ std::vector<Point2D> AnchorMetrics::triangulateStraight() const {
     }
     if (anchor.segmentPosition == SegmentPosition::END || anchor.segmentPosition == SegmentPosition::COMPLETE) {
         std::vector<Point2D> capPoints = triangulateCap(anchor.center, anchor.end,
-                                                        *this, borderCorners[3], borderCorners[4]);
+                                                        *this, borderCorners[3], borderCorners[2]);
         vertices.insert(vertices.end(), capPoints.begin(), capPoints.end());
     }
     return vertices;
@@ -253,6 +253,73 @@ std::vector<Point2D> AnchorMetrics::triangulateMiterJoint() const {
     return vertices;
 }
 
+std::vector<Point2D> triangulateRoundCap(const Point2D& beginSegment,
+                                         const Point2D& endSegment,
+                                         const AnchorMetrics& anchorMetrics,
+                                         const Point2D& segmentCornerA,
+                                         const Point2D& segmentCornerB) {
+
+    std::vector<Point2D> vertices;
+    Vector2D segmentAsVec = points2DtoVector2D(beginSegment, endSegment);
+    segmentAsVec.normalize();
+    float radius = anchorMetrics.thickness / 2;
+    segmentAsVec.scale(anchorMetrics.thickness / 2);
+
+    Vector2D arcStart = points2DtoVector2D(endSegment, segmentCornerA);
+    arcStart.normalize();
+    Vector2D arcEnd = points2DtoVector2D(endSegment, segmentCornerB);
+    arcEnd.normalize();
+
+    float arcStartAngle = acos(arcStart.x);
+    float arcEndAngle = acos(arcEnd.x);
+
+    if (arcStart.y < 0){
+        arcStartAngle = 2 * M_PI - arcStartAngle;
+    }
+    if (arcEnd.y < 0){
+        arcEndAngle = 2 * M_PI - arcEndAngle;
+    }
+
+    int startAngDegrees = arcStartAngle *  180. / M_PI; // 1.89 | 288
+    int endAngDegrees = arcEndAngle * 180. / M_PI; // 5.03 | 108
+
+    // modify direction to ensure outer arc
+    float directionModifier = 1.;
+    if ((beginSegment.x > segmentCornerA.x && arcStartAngle < arcEndAngle) ||
+        (beginSegment.x < segmentCornerA.x && arcStartAngle > arcEndAngle) &&
+        beginSegment.x != endSegment.x) {
+        directionModifier = -1.;
+    }
+
+    // special handling for vertical lines
+    if (beginSegment.x == endSegment.x && segmentCornerA.x < segmentCornerB.x) {
+        directionModifier = -1.;
+    }
+
+    float shortestAngle = (((endAngDegrees - startAngDegrees) + 180) % 360 - 180);
+    float angleDistanceRad = (shortestAngle * M_PI) / 180;
+
+    std::vector<Point2D> jointVerts;
+    for (float increment = 0; fabs(increment) < fabs(angleDistanceRad); increment +=(angleDistanceRad / 8)) {
+        float x = cos(arcStartAngle + (increment * directionModifier));
+        float y = sin(arcStartAngle + (increment * directionModifier));
+        jointVerts.push_back({endSegment.x + x * radius, endSegment.y + y * radius});
+    }
+
+    for (int i = 1; i < jointVerts.size(); i++) {
+        vertices.push_back(endSegment);
+        vertices.push_back(jointVerts.at(i - 1));
+        vertices.push_back(jointVerts.at(i));
+    }
+
+    // close any gap remaining
+    vertices.push_back(endSegment);
+    vertices.push_back(jointVerts.back());
+    vertices.push_back(segmentCornerB);
+
+    return vertices;
+}
+
 std::vector<Point2D> AnchorMetrics::triangulateRoundJoint() const {
     std::vector<Point2D> vertices;
     Point2D centerBorderA = anchor.center.translateCopy(beginToBorder);
@@ -328,7 +395,7 @@ std::vector<Point2D> triangulateCap(const Point2D& beginSegment,
         return triangulateSquareCap(beginSegment, endSegment, anchorMetrics, segmentCornerA, segmentCornerB);
     }
     else if (anchorMetrics.anchor.capType == CapType::ROUND) {
-        // todo
+        return triangulateRoundCap(beginSegment, endSegment, anchorMetrics, segmentCornerA, segmentCornerB);
     }
     return {};
 }

@@ -7,7 +7,7 @@
 
 #include <vector>
 #include "../primitive/color.h"
-#include "../../geometry/point.h"
+#include "../../geometry/point-geo.h"
 #include "../../geometry/anchor.h"
 #include "../drawable.h"
 
@@ -37,13 +37,13 @@ public:
 
 class CircleBuilder {
 public:
-    CircleBuilder(const Point2D &center, const float radius);
+    CircleBuilder(const Point2D &center, float radius);
 
-    CircleBuilder& withThickness(const float &thickness);
+    CircleBuilder& withThickness(float thickness);
 
-    CircleBuilder& withStrokeColor(const RGBA strokeColor);
+    CircleBuilder& withStrokeColor(RGBA strokeColor);
 
-    CircleBuilder& withFillColor(const RGBA fillColor);
+    CircleBuilder& withFillColor(RGBA fillColor);
 
     CircleBuilder& filled();
 
@@ -53,9 +53,5 @@ public:
 private:
     Circle circle;
 };
-
-//const Point2D &Circle::getCenter() const {
-//    return center;
-//}
 
 #endif //OPENGL_TUTORIAL_CIRCLE_H

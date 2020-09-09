@@ -7,7 +7,7 @@
 
 #include <cmath>
 #include "vector.h"
-#include "point.h"
+#include "point-geo.h"
 
 float magnitude(const Vector2D& vector2D) {
     return sqrt(pow(vector2D.x, 2) + pow(vector2D.y, 2));

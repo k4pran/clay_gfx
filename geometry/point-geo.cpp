@@ -6,7 +6,7 @@
 #define POINT_H
 
 #include <cmath>
-#include "point.h"
+#include "point-geo.h"
 
 float Point2D::pointDistance(const Point2D &a, const Point2D &b) {
     return sqrt(pow(b.x - a.x, 2) + pow(b.y - a.y, 2));
