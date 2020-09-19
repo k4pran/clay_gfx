@@ -29,7 +29,7 @@ std::vector<float> Axis::asVertices() {
 std::vector<float> Axis::spineAsVertices(std::vector<Point2D> spinePoints) {
     Line spine = Line::make(spinePoints[0], spinePoints[1])
             .withThickness(this->thickness)
-            .withCapType(rounded ? CapType::BUTT : CapType::ROUND);
+            .withCapType(rounded ? CapType::ROUND : CapType::BUTT);
     return spine.asVertices();
 }
 
