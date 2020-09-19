@@ -18,14 +18,16 @@ std::vector<float> Axes2D::asVertices() {
                          .withTicks(drawTicks)
                          .withThickness(thickness)
                          .withNbTicks(nbTicks)
-                         .withRange(range).withStrokeColor(strokeColor)};
+                         .withRange(range).withStrokeColor(strokeColor)
+                         .asRounded(rounded)};
     }
     if (!hAxis) {
         hAxis = {Axis::make(AxisType::HORIZONTAL, boundary)
                          .withTicks(drawTicks)
                          .withThickness(thickness)
                          .withNbTicks(nbTicks)
-                         .withRange(range).withStrokeColor(strokeColor)};
+                         .withRange(range).withStrokeColor(strokeColor)
+                         .asRounded(rounded)};
     }
 
     std::vector<float> vAxisVertices = vAxis->asVertices();
@@ -69,5 +71,10 @@ AxesBuilder2D &AxesBuilder2D::withThickness(float thickness) {
 
 AxesBuilder2D &AxesBuilder2D::withStrokeColor(RGBA strokeColor) {
     axes.strokeColor = strokeColor;
+    return *this;
+}
+
+AxesBuilder2D &AxesBuilder2D::asRounded() {
+    axes.rounded = true;
     return *this;
 }

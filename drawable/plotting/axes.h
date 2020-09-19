@@ -24,6 +24,7 @@ class Axes2D: Drawable {
     int nbTicks = 10;
     bool drawTicks = false;
     float thickness = 0.02;
+    bool rounded = false;
     RGBA strokeColor = {0.0, 0.0, 0.0, 1.0};
 
 public:
@@ -52,6 +53,7 @@ public:
 
     AxesBuilder2D& withStrokeColor(RGBA rgba);
 
+    AxesBuilder2D& asRounded();
 
     operator Axes2D &&() {
         return std::move(axes);

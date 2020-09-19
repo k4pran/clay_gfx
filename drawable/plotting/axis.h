@@ -23,6 +23,7 @@ class Axis: Drawable {
     Range range = {-100, 100};
     int nbTicks = 10;
     bool drawTicks = false;
+    bool rounded = false;
     float thickness = 0.02;
     RGBA strokeColor = {0.0, 0.0, 0.0, 1.0};
 
@@ -69,6 +70,9 @@ public:
 
     AxisBuilder& withStrokeColor(RGBA rgba);
 
+    AxisBuilder& asRounded(bool rounded);
+
+    AxisBuilder& asRounded();
 
     operator Axis &&() {
         return std::move(axis);

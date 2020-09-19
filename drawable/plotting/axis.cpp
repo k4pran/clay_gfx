@@ -28,7 +28,8 @@ std::vector<float> Axis::asVertices() {
 
 std::vector<float> Axis::spineAsVertices(std::vector<Point2D> spinePoints) {
     Line spine = Line::make(spinePoints[0], spinePoints[1])
-            .withThickness(this->thickness);
+            .withThickness(this->thickness)
+            .withCapType(rounded ? CapType::BUTT : CapType::ROUND);
     return spine.asVertices();
 }
 
@@ -91,7 +92,9 @@ std::vector<Line> Axis::createHorizontalAxisTicks(Point2D start, Point2D end) {
     std::vector<Line> ticks;
     const float y = start.y;
     for (int i = 0; i < nbTicks; i++) {
-        Line tick = Line::make({start.x + i * inc, y}, {start.x + i * inc, y + TICK_LENGTH})
+        float vOffset = (i * inc);
+        float hOffset = thickness / 2;
+        Line tick = Line::make({start.x + vOffset, y + hOffset}, {start.x + vOffset, y + TICK_LENGTH + hOffset})
                 .withThickness(this->thickness / 2);
         ticks.push_back(tick);
     }
@@ -107,7 +110,9 @@ std::vector<Line> Axis::createVerticalAxisTicks(Point2D start, Point2D end) {
     std::vector<Line> ticks;
     const float x = start.x;
     for (int i = 0; i < nbTicks; i++) {
-        Line tick = Line::make({x, start.y + i * inc}, {x + TICK_LENGTH, start.y + i * inc})
+        float hOffset = (i * inc);
+        float vOffset = thickness / 2;
+        Line tick = Line::make({x + vOffset, start.y + hOffset}, {x + TICK_LENGTH + vOffset, start.y + hOffset})
                 .withThickness(this->thickness / 2);
         ticks.push_back(tick);
     }
@@ -152,5 +157,15 @@ AxisBuilder &AxisBuilder::withThickness(float thickness) {
 
 AxisBuilder &AxisBuilder::withStrokeColor(RGBA strokeColor) {
     axis.strokeColor = strokeColor;
+    return *this;
+}
+
+AxisBuilder &AxisBuilder::asRounded(bool rounded) {
+    axis.rounded = rounded;
+    return *this;
+}
+
+AxisBuilder &AxisBuilder::asRounded() {
+    axis.rounded = true;
     return *this;
 }
