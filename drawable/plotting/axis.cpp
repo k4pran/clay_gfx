@@ -84,7 +84,7 @@ std::vector<Line> Axis::createTicks(Point2D start, Point2D end) {
 }
 
 std::vector<Line> Axis::createHorizontalAxisTicks(Point2D start, Point2D end) {
-    if (range.min > range.max) {
+    if (range.start > range.end) {
         // todo error
         return {};
     }
@@ -102,7 +102,7 @@ std::vector<Line> Axis::createHorizontalAxisTicks(Point2D start, Point2D end) {
 }
 
 std::vector<Line> Axis::createVerticalAxisTicks(Point2D start, Point2D end) {
-    if (range.min > range.max) {
+    if (range.start > range.end) {
         // todo error
         return {};
     }

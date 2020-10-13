@@ -1,0 +1,1 @@
+add_executable(opengl_test math_parser_test.cpp math_expr_test.cpp)

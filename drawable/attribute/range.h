@@ -6,8 +6,8 @@
 #define OPENGL_TUTORIAL_RANGE_H
 
 struct Range {
-    float min;
-    float max;
+    float start;
+    float end;
 };
 
 #endif //OPENGL_TUTORIAL_RANGE_H
